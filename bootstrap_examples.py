@@ -129,6 +129,11 @@ def example_2_with_a_twist(n_replications=500):
     """
 
     ci_contains_true_75th_percentile = []
+
+    # This should be the true 75th percentile of a triangle distribution,
+    # i.e. of the sum of two Uniform[0, 1]
+    # See https://stats.stackexchange.com/questions/41467/consider-the-sum-of-n-uniform-distributions-on-0-1-or-z-n-why-does-the
+    # for a visual of the probability density
     true_75th_percentile = 2 - np.sqrt(1 / 2)
 
     calculate_75th_percentile = partial(np.percentile, q=75)
@@ -142,6 +147,9 @@ def example_2_with_a_twist(n_replications=500):
             confidence_interval[0] < true_75th_percentile < confidence_interval[1]
         )
 
+    # TODO Sean's question:  where is the "cliff" where coverage falls to zero?
+    # We see close to 95% coverage for the 75th percentile, and _zero_ coverage for the max
+    # Could generate a graph with percentile on the x-axis, CI coverage on the y-axis
     coverage = np.mean(ci_contains_true_75th_percentile)
     print("*** Example 2 With a Twist (75th percentile instead of median) ***")
     print(" Bootstrap percentile confidence interval for the 75th percentile")
@@ -189,6 +197,7 @@ def simulate_dataframe(n_obs):
 
     df["epsilon"] = np.random.normal(size=n_obs)
 
+    # Note that the true coefficient for x4 is zero
     df["y"] = (
         10 + 5 * df["x1"] - 3 * df["x2"] + 1 * df["x3"] - 4 * df["x5"] + df["epsilon"]
     )
@@ -238,7 +247,7 @@ def main():
     example_2()
     example_2_with_a_twist()
 
-    # An example where the boostrap does not work
+    # An example where the bootstrap does not work
     example_3()
 
     # A more complicated example involving an elastic net
