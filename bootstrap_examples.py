@@ -21,7 +21,10 @@ def simulate_confidence_interval_for_mean(n_obs=35):
     # Also see https://stats.stackexchange.com/questions/100041/how-exactly-did-statisticians-agree-to-using-n-1-as-the-unbiased-estimator-for
     std_error = np.sqrt(np.var(dataset, ddof=1) / n_obs)
 
-    confidence_interval = [sample_mean - 1.96 * std_error, sample_mean + 1.96 * std_error]
+    confidence_interval = [
+        sample_mean - 1.96 * std_error,
+        sample_mean + 1.96 * std_error,
+    ]
 
     return confidence_interval
 
@@ -37,7 +40,9 @@ def example_0(n_simulations=1000):
 
         confidence_interval = simulate_confidence_interval_for_mean()
 
-        ci_contains_true_mean.append(confidence_interval[0] < true_mean < confidence_interval[1])
+        ci_contains_true_mean.append(
+            confidence_interval[0] < true_mean < confidence_interval[1]
+        )
 
     coverage = np.mean(ci_contains_true_mean)
 
@@ -90,7 +95,9 @@ def example_1(n_obs=55, verbose=True, statistic=np.median, population_value=1.0)
 
     if verbose:
         print("*** Example 1 ***")
-        print(f" sample {statistic.__name__}: {sample_statistic} (the true population value is {population_value})")
+        print(
+            f" sample {statistic.__name__}: {sample_statistic} (the true population value is {population_value})"
+        )
         print(f" std error: {standard_error}")
         print(f" confidence interval: {percentile_confidence_interval}")
 
@@ -122,13 +129,15 @@ def example_2_with_a_twist(n_replications=500):
     """
 
     ci_contains_true_75th_percentile = []
-    true_75th_percentile = 2 - np.sqrt(1/2)
+    true_75th_percentile = 2 - np.sqrt(1 / 2)
 
     calculate_75th_percentile = partial(np.percentile, q=75)
 
     for _ in range(n_replications):
 
-        confidence_interval = example_1(verbose=False, statistic=calculate_75th_percentile)
+        confidence_interval = example_1(
+            verbose=False, statistic=calculate_75th_percentile
+        )
         ci_contains_true_75th_percentile.append(
             confidence_interval[0] < true_75th_percentile < confidence_interval[1]
         )
@@ -154,7 +163,9 @@ def example_3(n_replications=500):
 
     for _ in range(n_replications):
 
-        confidence_interval = example_1(verbose=False, statistic=np.max, population_value=true_max)
+        confidence_interval = example_1(
+            verbose=False, statistic=np.max, population_value=true_max
+        )
         ci_contains_true_max.append(
             confidence_interval[0] < true_max < confidence_interval[1]
         )
@@ -167,7 +178,9 @@ def example_3(n_replications=500):
 
 def simulate_dataframe(n_obs):
 
-    df = pd.DataFrame({"x1": np.random.uniform(size=n_obs), "x2": np.random.uniform(size=n_obs)})
+    df = pd.DataFrame(
+        {"x1": np.random.uniform(size=n_obs), "x2": np.random.uniform(size=n_obs)}
+    )
 
     df["x3"] = df["x2"] + np.random.uniform(size=n_obs)
 
@@ -176,7 +189,9 @@ def simulate_dataframe(n_obs):
 
     df["epsilon"] = np.random.normal(size=n_obs)
 
-    df["y"] = 10 + 5 * df["x1"] - 3 * df["x2"] + 1 * df["x3"] - 4 * df["x5"] + df["epsilon"]
+    df["y"] = (
+        10 + 5 * df["x1"] - 3 * df["x2"] + 1 * df["x3"] - 4 * df["x5"] + df["epsilon"]
+    )
 
     return df
 
@@ -203,7 +218,9 @@ def example_4(n_obs=90, n_replications=100):
 
     coef = get_model_coefficients(df)
 
-    coefs = np.array(bootstrap(df, get_model_coefficients, n_bootstrap_samples=n_replications))
+    coefs = np.array(
+        bootstrap(df, get_model_coefficients, n_bootstrap_samples=n_replications)
+    )
 
     fraction_zeroed_out = np.mean(np.isclose(coefs, 0.0), axis=0)
 
