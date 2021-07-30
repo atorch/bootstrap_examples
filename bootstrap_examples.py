@@ -1,3 +1,5 @@
+from functools import partial
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import ElasticNetCV
@@ -115,6 +117,28 @@ def example_2(n_replications=500):
     print(f"CI coverage: {coverage} (this should be close to 0.95)")
 
 
+def example_2_with_a_twist(n_replications=500):
+    """How often do the bootstrap percentile CIs from example 1 actually contain the true 75th percentile?
+    """
+
+    ci_contains_true_75th_percentile = []
+    true_75th_percentile = 2 - np.sqrt(1/2)
+
+    calculate_75th_percentile = partial(np.percentile, q=75)
+
+    for _ in range(n_replications):
+
+        confidence_interval = example_1(verbose=False, statistic=calculate_75th_percentile)
+        ci_contains_true_75th_percentile.append(
+            confidence_interval[0] < true_75th_percentile < confidence_interval[1]
+        )
+
+    coverage = np.mean(ci_contains_true_75th_percentile)
+    print("*** Example 2 ***")
+    print("Bootstrap percentile confidence interval for the 75th percentile")
+    print(f"CI coverage: {coverage} (this should be close to 0.95)")
+
+
 def example_3(n_replications=500):
     """An example where the bootstrap does *not* work
 
@@ -192,6 +216,7 @@ def main():
 
     example_1()
     example_2()
+    example_2_with_a_twist()
 
     # An example where the boostrap does not work
     example_3()
