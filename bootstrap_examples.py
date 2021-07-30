@@ -42,8 +42,8 @@ def example_0(n_simulations=1000):
     coverage = np.mean(ci_contains_true_mean)
 
     print("*** Example 0 ***")
-    print("Simple confidence interval for the mean")
-    print(f"CI coverage: {coverage} (this should be close to 0.95)")
+    print(" Simple confidence interval for the mean")
+    print(f" CI coverage: {coverage} (this should be close to 0.95)")
 
 
 def resample(dataset):
@@ -90,9 +90,9 @@ def example_1(n_obs=55, verbose=True, statistic=np.median, population_value=1.0)
 
     if verbose:
         print("*** Example 1 ***")
-        print(f"sample {statistic.__name__}: {sample_statistic} (the true population value is {population_value})")
-        print(f"std error: {standard_error}")
-        print(f"confidence interval: {percentile_confidence_interval}")
+        print(f" sample {statistic.__name__}: {sample_statistic} (the true population value is {population_value})")
+        print(f" std error: {standard_error}")
+        print(f" confidence interval: {percentile_confidence_interval}")
 
     return percentile_confidence_interval
 
@@ -113,8 +113,8 @@ def example_2(n_replications=500):
 
     coverage = np.mean(ci_contains_true_median)
     print("*** Example 2 ***")
-    print("Bootstrap percentile confidence interval for the median")
-    print(f"CI coverage: {coverage} (this should be close to 0.95)")
+    print(" Bootstrap percentile confidence interval for the median")
+    print(f" CI coverage: {coverage} (this should be close to 0.95)")
 
 
 def example_2_with_a_twist(n_replications=500):
@@ -134,9 +134,9 @@ def example_2_with_a_twist(n_replications=500):
         )
 
     coverage = np.mean(ci_contains_true_75th_percentile)
-    print("*** Example 2 ***")
-    print("Bootstrap percentile confidence interval for the 75th percentile")
-    print(f"CI coverage: {coverage} (this should be close to 0.95)")
+    print("*** Example 2 With a Twist (75th percentile instead of median) ***")
+    print(" Bootstrap percentile confidence interval for the 75th percentile")
+    print(f" CI coverage: {coverage} (this should be close to 0.95)")
 
 
 def example_3(n_replications=500):
@@ -161,8 +161,8 @@ def example_3(n_replications=500):
 
     coverage = np.mean(ci_contains_true_max)
     print("*** Example 3 ***")
-    print("Bootstrap percentile confidence interval for the maximum")
-    print(f"CI coverage: {coverage} (isn't close to 0.95!)")
+    print(" Bootstrap percentile confidence interval for the maximum")
+    print(f" CI coverage: {coverage} (isn't close to 0.95!)")
 
 
 def simulate_dataframe(n_obs):
@@ -205,9 +205,12 @@ def example_4(n_obs=90, n_replications=100):
 
     coefs = np.array(bootstrap(df, get_model_coefficients, n_bootstrap_samples=n_replications))
 
-    # TODO Plot
-    # TODO How often is each coef zeroed out?
     fraction_zeroed_out = np.mean(np.isclose(coefs, 0.0), axis=0)
+
+    print("*** Example 4 ***")
+    print(" How often does each coefficient get zeroed out of an elastic net?")
+    print(f" {fraction_zeroed_out}")
+
 
 def main():
 
